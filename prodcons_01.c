@@ -33,10 +33,8 @@ void *producer(void *data){
 		append();
 		n = n + 1;
 		outi("[P] \t \t item: %d\n", n);
-		if(n == 1){
-			sem_post(&delay);
-			sem_post(&s);
-		}
+		if(n == 1) sem_post(&delay);
+		sem_post(&s);
 	}
 	pthread_exit(0);
 }
@@ -47,7 +45,7 @@ void *consumer(void *data){
 		sem_wait(&s);
 		take();
 		outi("[c] \t \t item: %d\n", n);
-		n = n + 1;
+		n = n - 1;
 		sem_post(&s);
 		consume();
 		if(n == 0) sem_wait(&delay);
